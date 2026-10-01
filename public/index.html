@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINTA-SE LINDA & Galpão - Controle Executivo de Devoluções</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <header class="w-full bg-white/90 dark:bg-darkCard/90 backdrop-blur-md border-b border-slate-200 dark:border-darkBorder py-4 px-4 sm:px-8 shadow-sm sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="header-icon-bg" class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-inner bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400 font-bold">
+                    📊
+                </div>
+                <div>
+                    <h1 id="main-app-title" class="text-base sm:text-lg font-extrabold tracking-tight">SINTA-SE LINDA</h1>
+                    <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">Painel Executivo de Logística & Retorno</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="status-pill" class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span id="status-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="status-text" class="text-xs font-bold text-slate-600 dark:text-slate-300">Sistema Online</span>
+                </div>
+                <button id="btn-theme" aria-label="Alternar modo claro/escuro" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Alternar modo claro/escuro">
+                    <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-8 pb-24">
+
+        <div id="import-banner" class="hidden mb-6 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <p class="text-xs text-amber-800 dark:text-amber-300 font-semibold">Encontramos dados salvos neste navegador. Quer importá-los para o servidor compartilhado?</p>
+            <div class="flex gap-2 flex-shrink-0">
+                <button id="btn-import-dismiss" class="px-3 py-2 rounded-xl text-xs font-bold text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40">Agora não</button>
+                <button id="btn-import-confirm" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-600 text-white hover:bg-amber-700">Importar dados deste navegador</button>
+            </div>
+        </div>
+
+        <!-- Store Navigation Tabs -->
+        <div class="grid grid-cols-2 gap-3 p-1.5 bg-slate-200/80 dark:bg-slate-900/80 rounded-2xl mb-8 border border-slate-300/50 dark:border-darkBorder shadow-inner">
+            <button data-store="sinta" id="tab-sinta" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-sm flex items-center justify-center gap-2">
+                <span>✨</span> SINTA-SE LINDA
+            </button>
+            <button data-store="galpao" id="tab-galpao" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-sm flex items-center justify-center gap-2">
+                <span>🏢</span> GALPÃO UTILIDADES
+            </button>
+        </div>
+
+        <!-- KPI Executive Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-slate-200 dark:border-darkBorder shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Devoluções no Dia</p>
+                    <h3 id="kpi-day-total" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-bold">
+                    📦
+                </div>
+            </div>
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-slate-200 dark:border-darkBorder shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Total do Mês</p>
+                    <h3 id="kpi-month-total" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold">
+                    📈
+                </div>
+            </div>
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-slate-200 dark:border-darkBorder shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Itens Cadastrados</p>
+                    <h3 id="kpi-items-count" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold">
+                    🏷️
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-darkCard rounded-3xl border border-slate-200 dark:border-darkBorder p-5 sm:p-8 shadow-sm mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100 dark:border-darkBorder mb-6">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Controle Operacional por Data</h2>
+                    <div class="flex items-center gap-3">
+                        <input type="date" id="date-picker" aria-label="Selecionar data" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 shadow-sm transition-all">
+                        <button id="btn-today" class="px-3 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold rounded-xl transition-all">Hoje</button>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <button id="btn-add-product" class="px-4 py-2.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-2">
+                        <span class="text-base font-black">+</span> Novo Produto
+                    </button>
+                    <button id="btn-daily-pdf" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 border border-slate-200 dark:border-slate-700">
+                        📄 Relatório Diário
+                    </button>
+                    <button id="btn-monthly-report" class="px-4 py-2.5 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-1.5">
+                        📊 Relatório Executivo Mensal
+                    </button>
+                </div>
+            </div>
+
+            <!-- Day Total Counter Bar -->
+            <div class="bg-gradient-to-br from-slate-50 to-indigo-50/30 dark:from-slate-900/60 dark:to-indigo-950/20 rounded-2xl border border-slate-200 dark:border-darkBorder p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">Volume Total Consolidado do Dia</span>
+                    <p class="text-xs text-slate-500">Soma automática de todas as devoluções registradas nesta data (somente leitura).</p>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <div id="day-total-display" aria-label="Total do dia" class="w-32 text-center text-3xl font-black bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl py-2 shadow-sm text-slate-800 dark:text-slate-100">0</div>
+                    <button id="btn-clear-day" class="px-3.5 py-3 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 text-xs font-bold border border-red-100 dark:border-red-900/30 transition-colors" title="Zerar todas as contagens deste dia">
+                        Zerar Dia
+                    </button>
+                </div>
+            </div>
+
+            <div id="loading-indicator" class="hidden text-center py-6 text-xs text-slate-400">Carregando...</div>
+            <div class="space-y-3" id="products-container">
+                <!-- Products injected here dynamically -->
+            </div>
+        </div>
+
+        <!-- Monthly History & Analytics Card -->
+        <div class="bg-white dark:bg-darkCard rounded-3xl border border-slate-200 dark:border-darkBorder p-5 sm:p-8 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                        <span>📅</span> Calendario de Atividade Mensal
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Selecione qualquer dia anterior para auditar ou atualizar dados históricos.</p>
+                </div>
+                <span id="monthly-total-badge" class="text-xs font-bold px-3 py-1.5 rounded-full border shadow-sm">Total do Mês: 0 peças</span>
+            </div>
+            <div id="monthly-days-list" class="flex flex-wrap gap-2.5">
+                <!-- History pills injected here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for adding product -->
+    <div id="product-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-darkBorder">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-bold mb-4">
+                ✨
+            </div>
+            <h3 class="text-lg font-bold mb-1 text-slate-900 dark:text-white">Cadastrar Novo Produto</h3>
+            <p class="text-xs text-slate-500 mb-5 leading-relaxed">Adicione um novo item de vestuário ou mercadoria para controle de devolução nesta data.</p>
+            <label for="new-product-name" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Nome ou Descrição do Produto</label>
+            <input type="text" id="new-product-name" maxlength="120" placeholder="Ex: Vestido Midi Floral, Calça Alfaiataria..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm mb-6 outline-none text-slate-800 dark:text-slate-100 shadow-sm focus:ring-2">
+            <div class="flex items-center justify-end gap-3">
+                <button id="btn-modal-cancel" class="px-5 py-3 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+                <button id="btn-modal-confirm" class="px-5 py-3 rounded-xl text-xs font-bold text-white transition-colors shadow-md">Confirmar Cadastro</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for editing product name/quantity -->
+    <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-darkBorder">
+            <h3 class="text-lg font-bold mb-1 text-slate-900 dark:text-white">Editar Produto</h3>
+            <p class="text-xs text-slate-500 mb-5 leading-relaxed">Altere o nome e/ou a quantidade registrada nesta data.</p>
+            <label for="edit-product-name" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Nome do Produto</label>
+            <input type="text" id="edit-product-name" maxlength="120" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm mb-4 outline-none text-slate-800 dark:text-slate-100 shadow-sm focus:ring-2">
+            <label for="edit-product-qty" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Quantidade</label>
+            <input type="number" id="edit-product-qty" min="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm mb-6 outline-none text-slate-800 dark:text-slate-100 shadow-sm focus:ring-2">
+            <div class="flex items-center justify-end gap-3">
+                <button id="btn-edit-cancel" class="px-5 py-3 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+                <button id="btn-edit-confirm" class="px-5 py-3 rounded-xl text-xs font-bold text-white transition-colors shadow-md">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Notification Alert Modal -->
+    <div id="custom-alert-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-darkBorder text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                ℹ️
+            </div>
+            <h3 id="alert-title" class="text-base font-bold mb-2 text-slate-900 dark:text-white">Aviso do Sistema</h3>
+            <p id="alert-message" class="text-xs text-slate-600 dark:text-slate-300 mb-6 leading-relaxed"></p>
+            <button id="btn-alert-ok" class="w-full py-3 rounded-xl text-xs font-bold bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 transition-colors shadow-md">Entendi</button>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal (destructive actions) -->
+    <div id="custom-confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-darkBorder text-center">
+            <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                ⚠️
+            </div>
+            <h3 id="confirm-title" class="text-base font-bold mb-2 text-slate-900 dark:text-white">Confirmar Ação</h3>
+            <p id="confirm-message" class="text-xs text-slate-600 dark:text-slate-300 mb-6 leading-relaxed"></p>
+            <div class="flex items-center gap-3">
+                <button id="btn-confirm-cancel" class="flex-1 py-3 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+                <button id="btn-confirm-ok" class="flex-1 py-3 rounded-xl text-xs font-bold bg-red-600 text-white hover:bg-red-700 transition-colors shadow-md">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-lg"></div>
+
+    <!-- Hidden iframe used to render and print PDFs without popup blockers -->
+    <iframe id="print-frame" class="hidden" title="Área de impressão"></iframe>
+
+    <script src="/app.js"></script>
+</body>
+</html>
