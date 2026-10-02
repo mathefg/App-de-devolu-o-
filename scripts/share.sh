@@ -12,7 +12,7 @@ if [ -f .env ]; then
   set +a
 fi
 
-PORT="${PORT:-3000}"
+PORT="${PORT:-3001}"
 
 if [ -z "${NGROK_AUTHTOKEN:-}" ]; then
   echo "Erro: NGROK_AUTHTOKEN não está definido no .env deste projeto." >&2
@@ -44,13 +44,13 @@ SERVER_PID=$!
 
 sleep 1
 
+# ngrok roda em primeiro plano: se ele cair ou falhar, o script encerra o
+# servidor logo em seguida (o trap cleanup cuida disso), em vez de ficar
+# preso esperando o servidor pra sempre.
 if [ -n "${NGROK_DOMAIN:-}" ]; then
   echo "Abrindo túnel ngrok com domínio fixo: $NGROK_DOMAIN"
-  NGROK_AUTHTOKEN="$NGROK_AUTHTOKEN" ngrok http --url="$NGROK_DOMAIN" "$PORT" &
+  NGROK_AUTHTOKEN="$NGROK_AUTHTOKEN" ngrok http --url="$NGROK_DOMAIN" "$PORT"
 else
   echo "Abrindo túnel ngrok (domínio temporário)..."
-  NGROK_AUTHTOKEN="$NGROK_AUTHTOKEN" ngrok http "$PORT" &
+  NGROK_AUTHTOKEN="$NGROK_AUTHTOKEN" ngrok http "$PORT"
 fi
-NGROK_PID=$!
-
-wait "$SERVER_PID" "$NGROK_PID"

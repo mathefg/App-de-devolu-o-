@@ -14,7 +14,7 @@ npm run build:css
 npm start
 ```
 
-Acesse `http://localhost:3000` — vai pedir a senha definida em `APP_PASSWORD`.
+Acesse `http://localhost:3001` — vai pedir a senha definida em `APP_PASSWORD`.
 
 Para desenvolvimento com reinício automático: `npm run dev`.
 Para recompilar o CSS enquanto edita: `npm run watch:css`.
@@ -23,7 +23,7 @@ Para recompilar o CSS enquanto edita: `npm run watch:css`.
 
 ```bash
 npm test              # backend (node:test + supertest)
-npx playwright test   # front-end (precisa do servidor rodando em :3000)
+npx playwright test   # front-end (precisa do servidor rodando em :3001)
 ```
 
 ## Arquitetura
@@ -42,7 +42,7 @@ npx playwright test   # front-end (precisa do servidor rodando em :3000)
 
 | Variável       | Descrição                                      |
 |----------------|--------------------------------------------------|
-| `PORT`         | Porta do servidor (padrão 3000)                  |
+| `PORT`         | Porta do servidor (padrão 3001)                  |
 | `APP_PASSWORD` | Senha única de acesso ao app (obrigatória fora de `NODE_ENV=development`) |
 | `DATA_DIR`     | Pasta onde o banco SQLite é salvo (padrão `./data`) |
 | `TZ`           | Fuso horário usado para "hoje" (padrão `America/Sao_Paulo`) |
@@ -72,7 +72,7 @@ navegador.
    npm run share
    ```
    Isso sobe o servidor (`node server.js`) e abre o túnel ngrok na mesma
-   porta do `.env` (`PORT`, padrão 3000), um na frente do outro no terminal.
+   porta do `.env` (`PORT`, padrão 3001), um na frente do outro no terminal.
    Ctrl+C encerra os dois juntos.
 
 O comando usa só o token deste `.env` — ele nunca roda `ngrok config
@@ -92,6 +92,6 @@ gerar um link novo a cada execução.
   deixe o app no ar sem ela.
 - Os dados ficam em `data/devolucoes.db`. Faça backup desse arquivo de vez em
   quando (basta copiá-lo).
-- Se outro projeto seu já estiver usando a porta 3000 no mesmo Mac ao mesmo
+- Se outro projeto seu já estiver usando a porta 3001 no mesmo Mac ao mesmo
   tempo, mude a `PORT` no `.env` deste projeto para uma porta livre (ex.:
-  `3001`) antes de rodar `npm run share`.
+  `3002`) antes de rodar `npm run share`.

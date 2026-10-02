@@ -17,7 +17,7 @@ const {
 } = require('./src/util');
 const { requireAuth, login } = require('./src/auth');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const APP_PASSWORD = process.env.APP_PASSWORD;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
