@@ -56,12 +56,42 @@ mais de uma vez sem duplicar quantidades incorretamente — mas evite clicar
 duas vezes de propósito, pois cada clique soma de novo os valores daquele
 navegador.
 
-## Publicando com ngrok
+## Colocar no ar com ngrok
 
-```bash
-ngrok http 3000
-```
+1. **Instale o ngrok** (se ainda não tiver): `brew install ngrok`.
+2. **Crie um token novo, exclusivo deste projeto**: acesse
+   [dashboard.ngrok.com/authtokens](https://dashboard.ngrok.com/authtokens),
+   clique em "Add Authtoken" e copie o token gerado. Não reutilize o token de
+   outro projeto seu — cada app deve ter o seu.
+3. **Preencha o `.env`** desta pasta com o token:
+   ```
+   NGROK_AUTHTOKEN=seu_token_aqui
+   ```
+4. **Rode**:
+   ```bash
+   npm run share
+   ```
+   Isso sobe o servidor (`node server.js`) e abre o túnel ngrok na mesma
+   porta do `.env` (`PORT`, padrão 3000), um na frente do outro no terminal.
+   Ctrl+C encerra os dois juntos.
 
-O link público exige a senha do `APP_PASSWORD`. Mantenha o Mac ligado e os
-dois processos (`npm start` e `ngrok`) abertos enquanto outras pessoas
-estiverem usando o app.
+O comando usa só o token deste `.env` — ele nunca roda `ngrok config
+add-authtoken` nem toca na configuração global do ngrok (o arquivo
+`~/Library/Application Support/ngrok/ngrok.yml` ou equivalente), então não
+interfere em outro projeto seu que também use ngrok.
+
+**Link fixo**: se você reservar um domínio grátis no painel do ngrok (seção
+*Domains*), coloque-o no `.env` como `NGROK_DOMAIN=seu-dominio.ngrok-free.app`
+e o `npm run share` passa a usar esse domínio automaticamente, em vez de
+gerar um link novo a cada execução.
+
+**Cuidados**:
+- O link só funciona enquanto o Mac estiver ligado e sem dormir, com
+  `npm run share` aberto.
+- Como o link fica público, a senha em `APP_PASSWORD` é obrigatória — nunca
+  deixe o app no ar sem ela.
+- Os dados ficam em `data/devolucoes.db`. Faça backup desse arquivo de vez em
+  quando (basta copiá-lo).
+- Se outro projeto seu já estiver usando a porta 3000 no mesmo Mac ao mesmo
+  tempo, mude a `PORT` no `.env` deste projeto para uma porta livre (ex.:
+  `3001`) antes de rodar `npm run share`.
