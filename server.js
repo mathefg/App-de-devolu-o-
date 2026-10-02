@@ -31,6 +31,9 @@ const effectivePassword = APP_PASSWORD || 'dev';
 function createApp() {
   const app = express();
   app.disable('x-powered-by');
+  // Confia no primeiro proxy (ngrok, ou outro túnel/reverse proxy na frente
+  // do app) para que o rate limit identifique o IP real, não o do proxy.
+  app.set('trust proxy', 1);
   app.use(helmet({ contentSecurityPolicy: false }));
   app.use(express.json({ limit: '100kb' }));
   app.use(cookieParser());
