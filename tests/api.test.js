@@ -34,7 +34,7 @@ test('login com senha errada falha', async () => {
 test('/login.html é acessível sem sessão', async () => {
   const res = await request(app).get('/login.html');
   assert.equal(res.status, 200);
-  assert.match(res.text, /MATHEUS TE AMA/);
+  assert.match(res.text, /DEVOLUÇÕES TIKTOK/);
 });
 
 test('/styles.css e /login.js são acessíveis sem sessão (a tela de login precisa deles)', async () => {

@@ -6,7 +6,7 @@ const PASSWORD = process.env.APP_PASSWORD || 'teste123';
 test('sem sessão, acessar o app redireciona para a tela de login', async ({ page }) => {
   await page.goto(`${BASE_URL}/`);
   await page.waitForURL(/\/login\.html$/);
-  await expect(page.locator('h1')).toContainText('MATHEUS TE AMA');
+  await expect(page.locator('h1')).toContainText('DEVOLUÇÕES TIKTOK');
 });
 
 test('senha errada mostra a caixa de erro', async ({ page }) => {
