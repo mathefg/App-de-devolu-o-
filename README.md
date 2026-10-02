@@ -75,10 +75,15 @@ navegador.
    porta do `.env` (`PORT`, padrão 3001), um na frente do outro no terminal.
    Ctrl+C encerra os dois juntos.
 
-O comando usa só o token deste `.env` — ele nunca roda `ngrok config
-add-authtoken` nem toca na configuração global do ngrok (o arquivo
-`~/Library/Application Support/ngrok/ngrok.yml` ou equivalente), então não
-interfere em outro projeto seu que também use ngrok.
+O comando gera um arquivo de config do ngrok **exclusivo deste projeto**
+(`.ngrok/config.yml`, fora do Git, recriado a cada execução e apagado ao
+encerrar) com o token do `.env`. Isso é necessário porque o ngrok sempre lê
+a configuração global (`~/Library/Application Support/ngrok/ngrok.yml`) e,
+se ela já tiver um authtoken salvo de outro projeto seu, ele tem prioridade
+sobre a variável de ambiente — passar o token só por `NGROK_AUTHTOKEN` não
+basta para isolar a conta. O script nunca roda `ngrok config add-authtoken`
+nem edita o arquivo global, então não interfere em outro projeto seu que
+também use ngrok.
 
 **Link fixo**: se você reservar um domínio grátis no painel do ngrok (seção
 *Domains*), coloque-o no `.env` como `NGROK_DOMAIN=seu-dominio.ngrok-free.app`
