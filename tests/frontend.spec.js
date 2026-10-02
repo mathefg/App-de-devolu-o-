@@ -4,7 +4,7 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:3001';
 const PASSWORD = process.env.APP_PASSWORD || 'teste123';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`);
+  await page.goto(`${BASE_URL}/login.html`);
   await page.fill('#password', PASSWORD);
   await page.click('button[type=submit]');
   await page.waitForURL(`${BASE_URL}/`);

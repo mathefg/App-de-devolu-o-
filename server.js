@@ -15,7 +15,7 @@ const {
   normalizeProductName,
   todayLocalISODate,
 } = require('./src/util');
-const { requireAuth, login } = require('./src/auth');
+const { requireAuth, login, logout } = require('./src/auth');
 
 const PORT = process.env.PORT || 3001;
 const APP_PASSWORD = process.env.APP_PASSWORD;
@@ -34,7 +34,22 @@ function createApp() {
   // Confia no primeiro proxy (ngrok, ou outro túnel/reverse proxy na frente
   // do app) para que o rate limit identifique o IP real, não o do proxy.
   app.set('trust proxy', 1);
-  app.use(helmet({ contentSecurityPolicy: false }));
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          'style-src': ["'self'", 'https://fonts.googleapis.com'],
+          'font-src': ["'self'", 'https://fonts.gstatic.com'],
+          // Desligado: forçaria o navegador a trocar toda chamada http://
+          // (inclusive localhost, sem HTTPS) por https://, quebrando o
+          // fetch() do login tanto em dev quanto atrás de um proxy que não
+          // seja HTTPS de ponta a ponta.
+          'upgrade-insecure-requests': null,
+        },
+      },
+    })
+  );
   app.use(express.json({ limit: '100kb' }));
   app.use(cookieParser());
 
@@ -49,14 +64,13 @@ function createApp() {
   app.get('/api/health', (req, res) => res.json({ ok: true }));
 
   app.post('/login', loginLimiter, (req, res) => login(req, res, effectivePassword));
+  app.get('/login', (req, res) => res.redirect('/login.html'));
 
   app.use(requireAuth(effectivePassword));
 
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.post('/logout', (req, res) => logout(req, res));
 
-  app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
-  });
+  app.use(express.static(path.join(__dirname, 'public')));
 
   function validateStoreDate(req, res) {
     const { store, date } = req.query.store !== undefined ? req.query : req.body;

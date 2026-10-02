@@ -31,6 +31,52 @@ test('login com senha errada falha', async () => {
   assert.equal(res.status, 401);
 });
 
+test('/login.html é acessível sem sessão', async () => {
+  const res = await request(app).get('/login.html');
+  assert.equal(res.status, 200);
+  assert.match(res.text, /MATHEUS TE AMA/);
+});
+
+test('/styles.css e /login.js são acessíveis sem sessão (a tela de login precisa deles)', async () => {
+  const css = await request(app).get('/styles.css');
+  assert.equal(css.status, 200);
+  const js = await request(app).get('/login.js');
+  assert.equal(js.status, 200);
+});
+
+test('/app.js (app autenticado) exige sessão, diferente dos recursos do login', async () => {
+  const res = await request(app).get('/app.js');
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.location, '/login.html');
+});
+
+test('sem sessão, página do app redireciona para /login.html', async () => {
+  const res = await request(app).get('/');
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.location, '/login.html');
+});
+
+test('logout apaga a sessão: depois dele, a API volta a exigir login', async () => {
+  const agent = await authedAgent();
+  const beforeLogout = await agent.get('/api/day?store=sinta&date=2026-07-01');
+  assert.equal(beforeLogout.status, 200);
+
+  const logoutRes = await agent.post('/logout');
+  assert.equal(logoutRes.status, 200);
+
+  const afterLogout = await agent.get('/api/day?store=sinta&date=2026-07-01');
+  assert.equal(afterLogout.status, 401);
+});
+
+test('CSP permite fontes do Google Fonts sem abrir geral', async () => {
+  const res = await request(app).get('/login.html');
+  const csp = res.headers['content-security-policy'];
+  assert.ok(csp, 'cabeçalho CSP deve existir');
+  assert.match(csp, /style-src[^;]*fonts\.googleapis\.com/);
+  assert.match(csp, /font-src[^;]*fonts\.gstatic\.com/);
+  assert.match(csp, /script-src[^;]*'self'/);
+});
+
 test('valida loja e data', async () => {
   const agent = await authedAgent();
   const res1 = await agent.get('/api/day?store=invalida&date=2026-01-01');

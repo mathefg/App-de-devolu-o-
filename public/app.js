@@ -54,7 +54,7 @@
       body: body ? JSON.stringify(body) : undefined,
     });
     if (res.status === 401) {
-      window.location.href = '/login';
+      window.location.href = '/login.html';
       throw new Error('Não autenticado');
     }
     const data = await res.json().catch(() => ({}));
@@ -650,6 +650,13 @@
       state.darkMode = !state.darkMode;
       applyTheme();
       savePrefs();
+    });
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      try {
+        await fetch('/logout', { method: 'POST' });
+      } finally {
+        window.location.href = '/login.html';
+      }
     });
   }
 

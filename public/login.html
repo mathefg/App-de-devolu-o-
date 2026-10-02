@@ -4,45 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entrar - Controle de Devoluções</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white dark:bg-darkCard rounded-3xl max-w-sm w-full p-8 shadow-sm border border-slate-200 dark:border-darkBorder">
-    <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-bold mb-4">🔒</div>
-    <h1 class="text-lg font-bold mb-1">Controle de Devoluções</h1>
-    <p class="text-xs text-slate-500 mb-5">Digite a senha de acesso para continuar.</p>
+<body class="bg-slate-100 min-h-screen flex flex-col items-center pt-24 px-4">
+
+  <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 flex items-center gap-2 mb-8 text-center">
+    MATHEUS TE AMA <span class="text-pink-600">♥</span>
+  </h1>
+
+  <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-sm border border-slate-200">
     <form id="login-form">
-      <input type="password" id="password" autocomplete="current-password" placeholder="Senha"
-        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm mb-3 outline-none focus:ring-2 focus:ring-indigo-500">
-      <p id="error-msg" class="text-xs text-red-500 mb-3 hidden"></p>
-      <button type="submit" class="w-full py-3 rounded-xl text-sm font-bold bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 transition-colors">Entrar</button>
+      <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">Senha</label>
+      <div class="relative mb-4">
+        <input type="password" id="password" autocomplete="current-password"
+          class="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-11 py-3 text-sm outline-none focus:ring-2 focus:ring-slate-400 text-slate-900">
+        <button type="button" id="btn-toggle-password" aria-label="Mostrar senha"
+          class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600">
+          <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div id="login-error" class="hidden bg-rose-50 text-rose-600 text-xs font-semibold rounded-xl p-3 mb-4"></div>
+
+      <button type="submit" class="w-full py-3.5 rounded-xl text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+        Entrar
+      </button>
     </form>
   </div>
-  <script>
-    const form = document.getElementById('login-form');
-    const errorMsg = document.getElementById('error-msg');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorMsg.classList.add('hidden');
-      const password = document.getElementById('password').value;
-      try {
-        const res = await fetch('/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password }),
-        });
-        if (res.ok) {
-          window.location.href = '/';
-        } else {
-          const data = await res.json().catch(() => ({}));
-          errorMsg.textContent = data.error || 'Falha ao entrar.';
-          errorMsg.classList.remove('hidden');
-        }
-      } catch {
-        errorMsg.textContent = 'Erro de conexão. Tente novamente.';
-        errorMsg.classList.remove('hidden');
-      }
-    });
-  </script>
+
+  <p class="text-xs text-slate-400 mt-4">Acesso privado</p>
+
+  <script src="/login.js"></script>
 </body>
 </html>
